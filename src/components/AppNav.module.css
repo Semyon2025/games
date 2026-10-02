@@ -1,0 +1,36 @@
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: -6px 0 18px;
+}
+
+.link {
+  min-height: 34px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  color: var(--purple);
+  font-weight: 800;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.active {
+  background: var(--purple-deep);
+  color: white;
+}
+
+@media (max-width: 700px) {
+  .nav {
+    flex-wrap: wrap;
+  }
+
+  .link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+}

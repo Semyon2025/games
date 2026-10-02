@@ -1,0 +1,9 @@
+.message {
+  composes: rise from '../styles/motion.module.css';
+  margin-top: 28px;
+  color: var(--muted);
+}
+
+.error {
+  color: #c2415b;
+}

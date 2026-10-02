@@ -1,0 +1,14 @@
+.section {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.section h2 {
+  margin-bottom: 8px;
+  color: #2d2838;
+  font-size: 1rem;
+}
+
+.section p {
+  color: #6d6578;
+}

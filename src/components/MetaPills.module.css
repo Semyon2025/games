@@ -1,0 +1,15 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  grid-column: 1 / -1;
+}
+
+.list span {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #f7eefb;
+  color: var(--purple);
+  font-size: 0.92rem;
+  font-weight: 700;
+}

@@ -1,0 +1,28 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  color: var(--purple);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+}
+
+.mark svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 700px) {
+  .brand {
+    max-width: calc(100% - 72px);
+    font-size: 1.15rem;
+  }
+}
