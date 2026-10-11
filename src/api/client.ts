@@ -15,11 +15,14 @@ if (needsCorsProxy) {
   // FreeToGame не отдаёт CORS-заголовки. На GitHub Pages нет своего прокси,
   // поэтому в проде заворачиваем запрос через публичный CORS proxy.
   apiClient.interceptors.request.use((config) => {
-    const path = config.url ?? ''
+    // Важно: путь без ведущего "/", иначе new URL('/games', '.../api')
+    // выбросит /api и получится freetogame.com/games вместо .../api/games
+    const path = (config.url ?? '').replace(/^\//, '')
     const query = config.params
       ? `?${new URLSearchParams(config.params as Record<string, string>).toString()}`
       : ''
-    const target = new URL(`${path}${query}`, baseURL.endsWith('/') ? baseURL : `${baseURL}/`)
+    const root = baseURL.endsWith('/') ? baseURL : `${baseURL}/`
+    const target = new URL(`${path}${query}`, root)
     config.baseURL = undefined
     config.params = undefined
     // corsproxy.io больше требует ключ; proxy.cors.dev для GET работает без регистрации
