@@ -1,12 +1,31 @@
 import axios from 'axios'
 
+const baseURL = import.meta.env.VITE_API_BASE_URL
+const needsCorsProxy = import.meta.env.PROD
+
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL,
   timeout: 10_000,
   headers: {
     'Content-Type': 'application/json',
   },
 })
+
+if (needsCorsProxy) {
+  // FreeToGame не отдаёт CORS-заголовки. На GitHub Pages нет своего прокси,
+  // поэтому в проде заворачиваем запрос через публичный CORS proxy.
+  apiClient.interceptors.request.use((config) => {
+    const path = config.url ?? ''
+    const query = config.params
+      ? `?${new URLSearchParams(config.params as Record<string, string>).toString()}`
+      : ''
+    const target = new URL(`${path}${query}`, baseURL.endsWith('/') ? baseURL : `${baseURL}/`)
+    config.baseURL = undefined
+    config.params = undefined
+    config.url = `https://corsproxy.io/?${encodeURIComponent(target.toString())}`
+    return config
+  })
+}
 
 apiClient.interceptors.response.use(
   (response) => response,

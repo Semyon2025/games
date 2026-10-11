@@ -2,7 +2,9 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  // На GitHub Pages сайт лежит по адресу /games/
+  base: command === 'build' ? '/games/' : '/',
   server: {
     host: true,
     port: 5173,
@@ -20,4 +22,4 @@ export default defineConfig({
     }),
     react(),
   ],
-})
+}))
