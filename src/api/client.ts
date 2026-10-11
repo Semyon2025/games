@@ -22,7 +22,8 @@ if (needsCorsProxy) {
     const target = new URL(`${path}${query}`, baseURL.endsWith('/') ? baseURL : `${baseURL}/`)
     config.baseURL = undefined
     config.params = undefined
-    config.url = `https://corsproxy.io/?${encodeURIComponent(target.toString())}`
+    // corsproxy.io больше требует ключ; proxy.cors.dev для GET работает без регистрации
+    config.url = `https://proxy.cors.dev/${target.toString()}`
     return config
   })
 }
