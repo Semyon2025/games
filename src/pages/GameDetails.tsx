@@ -14,11 +14,10 @@ import { ScreenshotList } from '../components/ScreenshotList'
 import { useLibrary } from '../hooks/useLibrary'
 import { formatRelease, plainText } from '../lib/format'
 import { genreLabel, platformLabel } from '../lib/labels'
-import { removeGame, saveGame } from '../lib/library'
 import styles from './GameDetails.module.css'
 
 export function GameDetails({ gameId }: { gameId: string }) {
-  const { userName, library } = useLibrary()
+  const { library, saveGame, removeGame } = useLibrary()
   const [folderId, setFolderId] = useState('')
   const [toast, setToast] = useState(false)
   const gameQuery = useQuery({
@@ -48,7 +47,7 @@ export function GameDetails({ gameId }: { gameId: string }) {
     .slice(0, 4)
 
   function collect() {
-    saveGame(userName, {
+    saveGame({
       id: game.id,
       title: game.title,
       thumbnail: game.thumbnail,
@@ -62,7 +61,9 @@ export function GameDetails({ gameId }: { gameId: string }) {
 
   function changeFolder(nextFolder: string) {
     setFolderId(nextFolder)
-    if (saved) saveGame(userName, { ...saved, folderId: nextFolder || null })
+    if (saved) {
+      saveGame({ ...saved, folderId: nextFolder || null })
+    }
   }
 
   return (
@@ -80,7 +81,7 @@ export function GameDetails({ gameId }: { gameId: string }) {
           folderId={folderId || saved?.folderId || ''}
           toast={toast}
           onCollect={collect}
-          onRemove={() => removeGame(userName, game.id)}
+          onRemove={() => removeGame(game.id)}
           onFolderChange={changeFolder}
         />
         <MetaPills

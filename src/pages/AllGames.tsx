@@ -10,12 +10,11 @@ import { Pagination } from '../components/Pagination'
 import { Screen } from '../components/Screen'
 import { useLibrary } from '../hooks/useLibrary'
 import { genreLabel, matchesLabel, matchesPlatform, platformLabel, uniqueLabels } from '../lib/labels'
-import { removeGame, saveGame } from '../lib/library'
 
 const PAGE_SIZE = 20
 
 export function AllGames() {
-  const { userName, library } = useLibrary()
+  const { library, saveGame, removeGame } = useLibrary()
   const gamesQuery = useQuery({
     queryKey: gameKeys.all,
     queryFn: getGames,
@@ -39,11 +38,11 @@ export function AllGames() {
 
   function toggleSave(game: Game) {
     if (savedIds.has(game.id)) {
-      removeGame(userName, game.id)
+      removeGame(game.id)
       return
     }
 
-    saveGame(userName, {
+    saveGame({
       id: game.id,
       title: game.title,
       thumbnail: game.thumbnail,

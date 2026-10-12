@@ -11,12 +11,11 @@ import { Pagination } from '../components/Pagination'
 import { Screen } from '../components/Screen'
 import { useLibrary } from '../hooks/useLibrary'
 import { genreLabel, matchesLabel, matchesPlatform, platformLabel, uniqueLabels } from '../lib/labels'
-import { createFolder, deleteFolder, removeGame } from '../lib/library'
 
 const PAGE_SIZE = 20
 
 export function SavedGames() {
-  const { userName, library } = useLibrary()
+  const { library, removeGame, createFolderAsync, deleteFolder } = useLibrary()
   const gamesQuery = useQuery({
     queryKey: gameKeys.all,
     queryFn: getGames,
@@ -41,8 +40,8 @@ export function SavedGames() {
   const currentPage = Math.min(page, pageCount)
   const pageGames = visibleGames.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
 
-  function addFolder(name: string) {
-    const next = createFolder(userName, name)
+  async function addFolder(name: string) {
+    const next = await createFolderAsync(name)
     const created = next.folders.find((folder) => folder.name.toLowerCase() === name.toLowerCase())
     if (created) setFolderId(created.id)
     setPage(1)
@@ -87,7 +86,7 @@ export function SavedGames() {
           }}
           onCreate={addFolder}
           onDelete={(id) => {
-            deleteFolder(userName, id)
+            deleteFolder(id)
             if (folderId === id) setFolderId('all')
           }}
         />
@@ -104,7 +103,7 @@ export function SavedGames() {
             games={pageGames}
             motionKey={`${folderId}-${sort}-${genre}-${platform}-${currentPage}`}
             isSaved={() => true}
-            onToggle={(game) => removeGame(userName, game.id)}
+            onToggle={(game) => removeGame(game.id)}
           />
         )}
         <Pagination page={currentPage} pageCount={pageCount} onPage={setPage} />
